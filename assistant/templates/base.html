@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Assistant</title>
+
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="container my-5">
+    <p>
+      <span class="h4 my-5 mx-auto">Model Assistant</span>
+    </p>
+    {% block content %}
+
+    {% endblock %}
+  </div>
+</body>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</html>
