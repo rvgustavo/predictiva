@@ -1,9 +1,5 @@
 from django import forms
 
-from .models import Document
-
-
-class DocumentForm(forms.ModelForm):
-    class Meta:
-        model = Document
-        fields = ('description', 'document', )
+#DataFlair #File_Upload
+class data_form(forms.Form):
+    data_file = forms.FileField()
