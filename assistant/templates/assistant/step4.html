@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load custom_tags %}
+<div class="card">
+  <div class="card-header"
+    style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+    aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent m-0 small">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="/assistant/1?nav=true">1. Load Dataset</a></li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a href="/assistant/2">2. Descriptive analysis</a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a href="/assistant/3">3. Target variable</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        4. Data treatment and cleaning
+      </li>
+    </ol>
+  </div>
+  <div class="card-body p-5 m-4">
+    <div class="row pb-4">
+      <div class="col-12">
+
+        <a href="/assistant/3" class="btn btn-sm btn-secondary back">
+          < Go to step 3 </a>
+            <a href="/assistant/5" class="btn btn-sm btn-secondary next">
+              Go to step 5 >
+            </a>
+      </div>
+    </div>
+    <form id="frm_preprocesing" method="POST" action="/assistant/5/">
+      {% csrf_token %}
+      <div class="row pb-4">
+        <div class="col-12">
+          <p class="h4">
+            Data treatment and cleaning
+          </p>
+        </div>
+      </div>
+      {% if not data %}
+      <div class="text-center mt-3">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      {% endif %}
+      <div class="row">
+        <p class="col-12 h5 mb-3">
+          Predictor variables
+        </p>
+        <div class="col-12">
+          <ul>
+            <li>
+              <p class="h6">
+                Remove outliers from the sample:
+              </p>
+              <p>
+                Select the values ​​that you think should be removed from the dataset for each variable, you can use the
+                ctrl
+                key to select multiple values
+              </p>
+            </li>
+          </ul>
+
+          <ol class="row small">
+            {% for key, value in data.unique.items %}
+            <div class="col-md-6 col-12">
+              <li class="p-2">
+                <span class="h6">{{key}}</span>
+                <select class="form-select form-select-sm" aria-label="" name="out_{{key}}" multiple>
+                  {% for v in value %}
+                  <option value="{{v}}">{{v}}</option>
+                  {% endfor %}
+                </select>
+              </li>
+            </div>
+            {% endfor %}
+          </ol>
+          </p>
+        </div>
+        <div class="col-12">
+          <ul>
+            <li>
+              <p class="h6">
+                Impute variables:
+              </p>
+              <p>
+                Enter the value with which the values ​​will be entered for each of the variables. Click on mean or
+                median
+                to apply this value
+              </p>
+            </li>
+          </ul>
+
+          <ol class="row small">
+            {% for key, value in data.unique.items %}
+            <div class="col-md-6 col-12">
+              <li class="p-2">
+                <div class="form-group form-group-sm">
+                  <label for="imp_{{key}}">
+                    <span class="h6">{{key}}</span>
+                  </label>
+                  <br>
+                  <span style="cursor: pointer;" class="mean-median" data-input="imp_{{key}}"
+                    data-value="{{ data.mean | lookup:key }}">
+                    Mean value: {{ data.mean | lookup:key }}</span> <br>
+                  <span style="cursor: pointer;" class="mean-median" data-input="imp_{{key}}"
+                    data-value="{{ data.median | lookup:key }}">
+                    Median value: {{ data.median | lookup:key }}</span>
+                  <input type="text" class="form-control form-control-sm" name="imp_{{key}}" id="imp_{{key}}">
+                </div>
+              </li>
+              <input type="hidden" name="target" id="target" value="{{data.target_id}}">
+            </div>
+            {% endfor %}
+          </ol>
+          </p>
+        </div>
+      </div>
+    </form>
+    <div class="row pb-4">
+      <div class="col-12">
+
+        <a href="/assistant/3" class="btn btn-sm btn-secondary back">
+          < Go to step 3 </a>
+            <a href="/assistant/5" class="btn btn-sm btn-secondary next">
+              Go to step 5 >
+            </a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    $("#spinner-load").toggleClass("d-none");
+    
+    $(".next").click(
+      (e) => {
+        e.preventDefault();
+        $("#frm_preprocesing").submit();
+      }
+    )
+
+    $(".mean-median").click((e) => {
+      input = e.target.attributes['data-input'].value;
+      value = e.target.attributes['data-value'].value;
+      $("#" + input).val(value);
+    });
+
+  });
+</script>
+
+{% endblock %}

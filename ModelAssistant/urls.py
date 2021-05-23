@@ -5,6 +5,8 @@ from assistant import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('home', views.home, name='home'),
+    path('assistant/<int:step>/', views.step_assistant, name='assisntant'),    
 ]
 
 if settings.DEBUG:
