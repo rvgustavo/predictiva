@@ -8,7 +8,7 @@
       <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
       <li class="breadcrumb-item"><a href="/assistant/1?nav=true">1. Load Dataset</a></li>
       <li class="breadcrumb-item" aria-current="page">
-        <a href="/assistant/2">2. Descriptive analysis</a>
+        <a href="/assistant/2">2. Dataset descriptive analysis</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
         3. Target variable
@@ -45,9 +45,11 @@
         <p class="h6">
           What is the target variable?
         </p>
-        <select class="form-select form-select-sm" aria-label="" id="frm_target">
-          <option value="-1" selected>Select a option</option>
+        <select class="form-select form-select-sm" aria-label="" name="target_id" id="target_id">
+          <option value="-1"
+          >Select a option</option>
           {% for v in cols %}
+          
           <option value="{{forloop.counter0}}">{{v}}</option>
           {% endfor %}
         </select>
@@ -62,12 +64,13 @@
 <script>
   $(function () {
     $("#spinner-load").toggleClass("d-none");
+    $('#target_id option[value="{{target}}"]').attr("selected", "selected");
     $("#next").click(
       (e) => {
         e.preventDefault();
-        option = $("#frm_target").val();
+        option = $("#target_id").val();
         if(option == -1){
-          $("#frm_target").addClass("is-invalid")
+          $("#target_id").addClass("is-invalid")
           return;
         }
         $(location).attr('href', '/assistant/4?target=' + option)

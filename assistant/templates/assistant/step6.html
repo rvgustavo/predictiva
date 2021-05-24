@@ -18,7 +18,10 @@
         <a href="/assistant/4?target={{data.target_id}}">4. Data treatment and cleaning</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        5. Prepare for modeling
+        <a href="/assistant/5?nav=true&target={{data.target}}&target_id={{data.target_id}}">5. Prepare for modeling</a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        6. Dataset transformed
       </li>
     </ol>
   </div>
@@ -26,48 +29,15 @@
     <div class="row pb-4">
       <div class="col-12">
 
-        <a href="/assistant/4?target={{data.target_id}}" class="btn btn-sm btn-secondary back">
-          < Go to step 4 </a>
-            <a href="/assistant/6" class="btn btn-sm btn-secondary next">
-              Go to step 6 >
-            </a>
+        <a href="/assistant/5?nav=true&target={{data.target}}&target_id={{data.target_id}}" class="btn btn-sm btn-secondary back">
+          < Go to step 5 </a>
       </div>
     </div>
     <div class="row pb-4">
       <div class="col-12">
         <p class="h4">
-          Dataset clean descriptive analisys
+          Dataset transformed descriptive analysis
         </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <p class="h6">
-          Data information
-        </p>
-        <table class="table table-sm table-striped table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Column</th>
-              <th scope="col">Null Count</th>
-              <th scope="col">Non-null Count</th>
-              <th scope="col">Dtype</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for f in data.info %}
-            <tr>
-              <th scope="row">{{ forloop.counter }}</th>
-              <td>{{f.column}}</td>
-              <td>{{f.null}}</td>
-              <td>{{f.notnull}}</td>
-              <td>{{f.dtype}}</td>
-            </tr>
-            {% endfor %}
-
-          </tbody>
-        </table>
       </div>
     </div>
 
@@ -83,6 +53,8 @@
         </div>
       </div>
     </div>
+
+    
 
     <div class="row mt-3">
       <div class="col-12">
@@ -110,6 +82,7 @@
         <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.vbs_cortas}}" alt="short variables">
       </div>
     </div>
+
     {% if data.rectificar %}
     <div class="row mt-3">
       <div class="col-12">
@@ -130,51 +103,46 @@
       </div>
     </div>
 
-    <form id="frm_preprocesing" method="POST" action="/assistant/6/">
-      {% csrf_token %}
-      <input type="hidden" name="target_id" value="{{data.target_id}}">
-      <input type="hidden" name="target" value="{{data.target}}">
-      <div class="row py-4">
-        <div class="col-12">
-          <p class="h4">
-            Prepare for modeling
-          </p>
-        </div>
+    <div class="row py-4">
+      <div class="col-12">
+        <p class="h4">
+          Modeling results - Best Model <span>{{best}}</span>
+        </p>
       </div>
-      <div class="row mb-3">
-        <div class="col-12">
-          <span class="h6">If you want to remove any variable from the model, select it, you can use the
-            ctrl
-            key to select multiple values</span>
-          <select class="form-select form-select-sm" aria-label="" name="removevar" multiple>
-            {% for v in data.variables %}
-            <option value="{{v}}">{{v}}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
+    </div>
 
-      <div class="row mb-3">
-        <div class="col-12">
-          <span class="h6">You can apply a transformation method to the data, if you want to do it select the
-            method</span>
-          <select class="form-select form-select-sm" aria-label="" name="transformation">
-            <option value="none" selected>None</option>
-            <option value="StandardScaler">Stardar Scaler</option>
-            <option value="MinMaxScaler">MinMax Scaler</option>
-          </select>
-        </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <p class="h6">
+          KNeighborsClassifier - Acuracy: {{knn_acu}}
+        </p>
+        <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.knn}}" alt="knn">
       </div>
-    </form>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12">
+        <p class="h6">
+          LogisticRegression - Acuracy: {{clf_acu}}
+        </p>
+        <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.clf}}" alt="knn">
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12">
+        <p class="h6">
+          DecisionTreeClassifier - Acuracy: {{tree_acu}}
+        </p>
+        <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.tree}}" alt="knn">
+      </div>
+    </div>
+
 
     <div class="row pb-4">
       <div class="col-12">
-
-        <a href="/assistant/4?target={{data.target_id}}" class="btn btn-sm btn-secondary back">
-          < Go to step 4 </a>
-            <a href="/assistant/6" class="btn btn-sm btn-secondary next">
-              Go to step 6 >
-            </a>
+        <a href="/assistant/5?nav=true&target={{data.target}}&target_id={{data.target_id}}" class="btn btn-sm btn-secondary back">
+          < Go to step 5 </a>
       </div>
     </div>
   </div>
@@ -190,13 +158,6 @@
         magnify: 0.8,
         url: $(this).find('img').attr('data-zoom')
       });
-
-    $(".next").click(
-      (e) => {
-        e.preventDefault();
-        $("#frm_preprocesing").submit();
-      }
-    )
   });
 </script>
 

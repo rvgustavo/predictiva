@@ -9,10 +9,10 @@
       <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
       <li class="breadcrumb-item"><a href="/assistant/1?nav=true">1. Load Dataset</a></li>
       <li class="breadcrumb-item" aria-current="page">
-        <a href="/assistant/2">2. Descriptive analysis</a>
+        <a href="/assistant/2">2. Dataset descriptive analysis</a>
       </li>
       <li class="breadcrumb-item" aria-current="page">
-        <a href="/assistant/3">3. Target variable</a>
+        <a href="/assistant/3?target={{data.target_id}}">3. Target variable</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
         4. Data treatment and cleaning
@@ -23,7 +23,7 @@
     <div class="row pb-4">
       <div class="col-12">
 
-        <a href="/assistant/3" class="btn btn-sm btn-secondary back">
+        <a href="/assistant/3?target={{data.target_id}}" class="btn btn-sm btn-secondary back">
           < Go to step 3 </a>
             <a href="/assistant/5" class="btn btn-sm btn-secondary next">
               Go to step 5 >
@@ -105,14 +105,17 @@
                   <br>
                   <span style="cursor: pointer;" class="mean-median" data-input="imp_{{key}}"
                     data-value="{{ data.mean | lookup:key }}">
-                    Mean value: {{ data.mean | lookup:key }}</span> <br>
+                    Mean value: {{ data.mean | lookup:key }}
+                  </span> <br>
                   <span style="cursor: pointer;" class="mean-median" data-input="imp_{{key}}"
                     data-value="{{ data.median | lookup:key }}">
-                    Median value: {{ data.median | lookup:key }}</span>
+                    Median value: {{ data.median | lookup:key }}
+                  </span>
                   <input type="text" class="form-control form-control-sm" name="imp_{{key}}" id="imp_{{key}}">
                 </div>
               </li>
-              <input type="hidden" name="target" id="target" value="{{data.target_id}}">
+              <input type="hidden" name="target_id" value="{{data.target_id}}">
+              <input type="hidden" name="target" value="{{data.target}}">
             </div>
             {% endfor %}
           </ol>
@@ -123,7 +126,7 @@
     <div class="row pb-4">
       <div class="col-12">
 
-        <a href="/assistant/3" class="btn btn-sm btn-secondary back">
+        <a href="/assistant/3?target={{data.target_id}}" class="btn btn-sm btn-secondary back">
           < Go to step 3 </a>
             <a href="/assistant/5" class="btn btn-sm btn-secondary next">
               Go to step 5 >
