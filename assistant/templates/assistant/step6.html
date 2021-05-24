@@ -65,14 +65,14 @@
       </div>
     </div>
 
-    <div class="row mt-3">
+    <!-- <div class="row mt-3">
       <div class="col-12">
         <p class="h6">
           Variable data distribution (Hover over image to zoom)
         </p>
         <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.pie}}" alt="Boxplot">
       </div>
-    </div>
+    </div> -->
 
     <div class="row mt-3">
       <div class="col-12">
@@ -106,7 +106,7 @@
     <div class="row py-4">
       <div class="col-12">
         <p class="h4">
-          Modeling results - Best Model <span>{{best}}</span>
+          Modeling results - Best Model <span>{{data.best}}</span>
         </p>
       </div>
     </div>
@@ -114,7 +114,7 @@
     <div class="row mt-3">
       <div class="col-12">
         <p class="h6">
-          KNeighborsClassifier - Acuracy: {{knn_acu}}
+          KNeighborsClassifier - Acuracy: {{data.knn_acu}}
         </p>
         <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.knn}}" alt="knn">
       </div>
@@ -123,7 +123,7 @@
     <div class="row mt-3">
       <div class="col-12">
         <p class="h6">
-          LogisticRegression - Acuracy: {{clf_acu}}
+          LogisticRegression - Acuracy: {{data.clf_acu}}
         </p>
         <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.clf}}" alt="knn">
       </div>
@@ -132,7 +132,7 @@
     <div class="row mt-3">
       <div class="col-12">
         <p class="h6">
-          DecisionTreeClassifier - Acuracy: {{tree_acu}}
+          DecisionTreeClassifier - Acuracy: {{data.tree_acu}}
         </p>
         <img class="img-fluid rounded img-thumbnail image-zoom" src="/{{data.tree}}" alt="knn">
       </div>

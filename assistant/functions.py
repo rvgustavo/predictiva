@@ -119,12 +119,19 @@ def step_2(request):
             sb.countplot(x=df[col],label='Count')
         plt.savefig('media/{}_vbs_cortas.jpg'.format(request.COOKIES['csrftoken']))
 
+    plt.figure(figsize=(30,30))
+    sb.pairplot(df[vbs_largas], corner=True ,diag_kind="hist",palette="bright")
+    plt.savefig('media/{}_vbs_largas.jpg'.format(request.COOKIES['csrftoken']))
+
+
 
     return {
         "info": info,
         "describe":describe,
         "boxplot":'media/{}_boxplot.jpg'.format(request.COOKIES['csrftoken']),
-        "vbs_cortas":'media/{}_vbs_cortas.jpg'.format(request.COOKIES['csrftoken'])
+        "vbs_cortas":'media/{}_vbs_cortas.jpg'.format(request.COOKIES['csrftoken']),
+        "rectificar":'media/{}_vbs_largas.jpg'.format(request.COOKIES['csrftoken']),
+            
     }
 
 def step_3(request):
@@ -430,6 +437,7 @@ def step_6(request, df = None):
     plt.savefig('media/{}_heatmap_transformado.jpg'.format(request.COOKIES['csrftoken']))
 
     accuracy = [accuracy_knn,accuracy_rl,accuracy_arboles]
+    
     if accuracy_knn == max(accuracy) :
         best = "KNeighborsClassifier "
     elif accuracy_rl == max(accuracy) :
@@ -451,9 +459,9 @@ def step_6(request, df = None):
             "knn":'media/{}_knn_matrix.jpg'.format(request.COOKIES['csrftoken']),
             "clf":'media/{}_clf_matrix.jpg'.format(request.COOKIES['csrftoken']),
             "tree":'media/{}_tree_matrix.jpg'.format(request.COOKIES['csrftoken']),
-            "knn_acu": accuracy_knn,
-            "clf_acu": accuracy_rl,
-            "tree_acu": accuracy_arboles,
+            "knn_acu": str(round(accuracy_knn*100,2))+"%",
+            "clf_acu": str(round(accuracy_rl*100,2))+"%",
+            "tree_acu": str(round(accuracy_arboles*100,2))+"%",
             "best":best
         }
 
